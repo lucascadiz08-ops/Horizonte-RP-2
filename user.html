@@ -1,17 +1,51 @@
-fetch('dni.json')
-  .then(response => response.json())
-  .then(data => {
-      let id = document.getElementById("buscarID").value;
-      let persona = data.find(p => p.psid === id);
-      if(persona){
-          document.getElementById("vps").innerText = persona.psid;
-          document.getElementById("vnombre").innerText = persona.nombre;
-          document.getElementById("vsexo").innerText = persona.sexo;
-          document.getElementById("vnacionalidad").innerText = persona.nacionalidad;
-          document.getElementById("vbusca").innerText = persona.busca;
-          document.getElementById("vmultas").innerText = persona.multas;
-          document.getElementById("dniCard").style.display="block";
-      } else {
-          alert("No existe ese DNI");
-      }
-  });
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>VISUALIZADOR DE DNI</title>
+<style>
+body{font-family:Arial;background:#0f2027;color:white;text-align:center;padding-top:50px;}
+input{padding:10px;border-radius:8px;border:none;}
+button{padding:10px 20px;border:none;border-radius:8px;background:#00c3ff;font-weight:bold;cursor:pointer;}
+.card{margin-top:20px;background:white;color:black;padding:20px;border-radius:10px;display:none;width:300px;margin-left:auto;margin-right:auto;}
+</style>
+</head>
+<body>
+
+<h2>VISUALIZADOR DE IDENTIDAD</h2>
+
+<input type="text" id="buscarID" placeholder="ID PlayStation">
+<button onclick="buscarDNI()">Buscar</button>
+
+<div class="card" id="dniCard">
+<p><strong>ID PS:</strong> <span id="vps"></span></p>
+<p><strong>Nombre:</strong> <span id="vnombre"></span></p>
+<p><strong>Sexo:</strong> <span id="vsexo"></span></p>
+<p><strong>Nacionalidad:</strong> <span id="vnacionalidad"></span></p>
+<p><strong>Busca y captura:</strong> <span id="vbusca"></span></p>
+<p><strong>Multas:</strong> <span id="vmultas"></span></p>
+</div>
+
+<script>
+function buscarDNI(){
+    let id = document.getElementById("buscarID").value;
+    let datos = localStorage.getItem(id);
+
+    if(datos){
+        let persona = JSON.parse(datos);
+        document.getElementById("vps").innerText = persona.psid;
+        document.getElementById("vnombre").innerText = persona.nombre;
+        document.getElementById("vsexo").innerText = persona.sexo;
+        document.getElementById("vnacionalidad").innerText = persona.nacionalidad;
+        document.getElementById("vbusca").innerText = persona.busca;
+        document.getElementById("vmultas").innerText = persona.multas;
+
+        document.getElementById("dniCard").style.display="block";
+    } else {
+        alert("No existe ese DNI");
+    }
+}
+</script>
+
+</body>
+</html>
