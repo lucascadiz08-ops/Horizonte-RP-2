@@ -27,22 +27,30 @@ button{padding:10px 20px;border:none;border-radius:8px;background:#00c3ff;font-w
 </div>
 
 <script>
-function buscarDNI(){
-    let id = document.getElementById("buscarID").value;
-    let datos = localStorage.getItem(id);
+// Función para leer dni.json online
+async function buscarDNI(){
+    const id = document.getElementById("buscarID").value;
+    try {
+        const response = await fetch('dni.json');
+        const data = await response.json();
 
-    if(datos){
-        let persona = JSON.parse(datos);
-        document.getElementById("vps").innerText = persona.psid;
-        document.getElementById("vnombre").innerText = persona.nombre;
-        document.getElementById("vsexo").innerText = persona.sexo;
-        document.getElementById("vnacionalidad").innerText = persona.nacionalidad;
-        document.getElementById("vbusca").innerText = persona.busca;
-        document.getElementById("vmultas").innerText = persona.multas;
+        const persona = data.find(p => p.psid === id);
 
-        document.getElementById("dniCard").style.display="block";
-    } else {
-        alert("No existe ese DNI");
+        if(persona){
+            document.getElementById("vps").innerText = persona.psid;
+            document.getElementById("vnombre").innerText = persona.nombre;
+            document.getElementById("vsexo").innerText = persona.sexo;
+            document.getElementById("vnacionalidad").innerText = persona.nacionalidad;
+            document.getElementById("vbusca").innerText = persona.busca;
+            document.getElementById("vmultas").innerText = persona.multas;
+
+            document.getElementById("dniCard").style.display = "block";
+        } else {
+            alert("No existe ese DNI");
+        }
+
+    } catch (error) {
+        alert("Error cargando los DNI: " + error);
     }
 }
 </script>
